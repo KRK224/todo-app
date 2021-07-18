@@ -17,15 +17,18 @@
         .text {
             margin-left:0.5rem;
             flex: 1;
+           
         }
-
-        &.check {
+        // 체크 되었을 때 보여 줄 스타일
+        &.checked {
             svg {
                 color: #22b8cf;
             }
             .text {
                 color: #adb5bd;
                 text-decoration: line-through;
+
+
             }
         }
     }

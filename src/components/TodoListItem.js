@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
     MdCheckBoxOutlineBlank,
     MdCheckBox,
@@ -7,17 +7,28 @@ import {
 import cn from 'classnames';
 import './TodoListItem.scss';
 
-const TodoListItem = ({todo}) =>{
-    const {text, checked} = todo;
+const TodoListItem = ({todo, onRemove, onToggle, onRevising, onChange}) =>{
+    const {id, text, checked, revising} = todo;
 
-
+    
     return(
         <div className="TodoListItem">
-            <div className={cn('checkbox', {checked})}>
-                {checked? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
-                <div className="text">{text}</div>
+            <div className={cn('checkbox', {checked})} >
+                {checked? <MdCheckBox onClick={()=>onToggle(id)} /> : <MdCheckBoxOutlineBlank onClick={()=>onToggle(id)} />}
+                <div className={cn('text', {revising})} onDoubleClick={(e)=>{onRevising(id);}}>
+                    {revising ? 
+                        <input 
+                            value={text} 
+                            onChange={e=>onChange(e, id)} 
+                            onKeyPress={(e)=>{
+                                if(e.key ==='Enter'){
+                                    onRevising(id);
+                                }
+                            }
+                        }/> :text}
+                </div>
             </div>
-            <div className='remove'>
+            <div className='remove' onClick={()=>onRemove(id)}>
                 <MdRemoveCircleOutline />
             </div>
         </div>
