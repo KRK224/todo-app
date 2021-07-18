@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
     MdCheckBoxOutlineBlank,
     MdCheckBox,
@@ -9,7 +9,14 @@ import './TodoListItem.scss';
 
 const TodoListItem = ({todo, onRemove, onToggle, onRevising, onChange}) =>{
     const {id, text, checked, revising} = todo;
+    const inputRef = useRef(null);
 
+    useEffect(()=>{
+        if(revising){
+            inputRef.current.focus();
+        }
+        
+    },[revising])
     
     return(
         <div className="TodoListItem">
@@ -25,7 +32,9 @@ const TodoListItem = ({todo, onRemove, onToggle, onRevising, onChange}) =>{
                                     onRevising(id);
                                 }
                             }
-                        }/> :text}
+                        }
+                            ref={inputRef}
+                        /> :text}
                 </div>
             </div>
             <div className='remove' onClick={()=>onRemove(id)}>
