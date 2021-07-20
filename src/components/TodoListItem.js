@@ -20,8 +20,8 @@ const TodoListItem = ({todo, onRemove, onToggle, onRevising, onChange}) =>{
     
     return(
         <div className="TodoListItem">
-            <div className={cn('checkbox', {checked})} >
-                {checked? <MdCheckBox onClick={()=>onToggle(id)} /> : <MdCheckBoxOutlineBlank onClick={()=>onToggle(id)} />}
+            <div className={cn('checkbox', {checked})} onClick={()=>onToggle(id)}>
+                {checked? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
                 <div className={cn('text', {revising})} onDoubleClick={(e)=>{onRevising(id);}}>
                     {revising ? 
                         <input 
@@ -44,4 +44,4 @@ const TodoListItem = ({todo, onRemove, onToggle, onRevising, onChange}) =>{
     );
 };
 
-export default TodoListItem;
+export default React.memo(TodoListItem);

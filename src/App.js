@@ -1,9 +1,24 @@
-import React, { useRef, useCallback,useState } from 'react'
+import React, { useRef, useCallback,useState, useReducer } from 'react'
 import TodoInsert from './components/TodoInsert';
 import TodoList from './components/TodoList';
 import TodoTemplate from './components/TodoTemplate';
 
 const App = ()=>{
+
+  function createBulkTodos() {
+    const array = [];
+    for( let i =1; i <=2500; i++){
+      array[i-1] ={
+        id: i,
+        text: `할 일 ${i}`,
+        checked: false,
+        revising: false
+      };
+    };
+    return array;
+  }
+
+  /*
 
   const [todos, setTodos] = useState([
     {
@@ -26,6 +41,36 @@ const App = ()=>{
     }
   ]);
 
+   */
+
+  /*
+  const todoReducer = (todos, action)=>{
+    switch (action.type){
+      case 'Insert':
+        return todos.concat(action.todo);
+      
+      case 'Remove':
+        return todos.filter((todo)=> todo.id !== action.id);
+
+      case 'Toggle':
+        return todos.map(todo => todo.id === action.id? {...todo, checked: !todo.checked}: todo);
+
+      case 'Change':
+        return todos.map(todo => todo.id === action.id? {...todo, text:action.e.target.value}: todo);
+
+      case 'Revising':
+        return todos.map(todo => todos.id === action.id? {...todo, revising: !todo.revising}: todo);
+    }
+
+  }
+
+  */
+  const [todos, setTodos] = useState(createBulkTodos);
+
+  /*
+  const [todosReduce, dispatch] = useReducer(todoReducer,undefined, createBulkTodos);
+  */
+ 
   const nextId = useRef(todos.length+1);
 
   const onInsert = useCallback(
@@ -37,48 +82,49 @@ const App = ()=>{
         revising: false
       };
 
-      setTodos(todos.concat(newTodo));
+      setTodos(todos=>todos.concat(newTodo));
       nextId.current +=1; // nextId에 1씩 더하기
     },
-    [todos]
+    []
   )
 
   const onRemove = useCallback(
     id =>{
-      setTodos(todos.filter(todo=> todo.id !== id));
+      setTodos(todos => todos.filter(todo=> todo.id !== id));
       
     },
-    [todos]
+    []
   )
 
   const onToggle = useCallback(
     id=> {
-      setTodos(
+      setTodos( todos =>
         todos.map(todo =>
           todo.id ===id ? {...todo, checked: !todo.checked}: todo
           )
       )
     },
-    [todos]
+    []
   )
 
   const onChange = useCallback((e, id)=>{
-    setTodos(todos.map(todo=>
+    setTodos( todos =>
+      todos.map(todo=>
       todo.id===id? {...todo, text: e.target.value}: todo
       ))
   },
-  [todos]
+  []
   )
 
   const onRevising = useCallback(
     id => {
 
-      setTodos(
+      setTodos( todos =>
         todos.map(todo=> 
           todo.id===id ? {...todo, revising: !todo.revising}: todo)
       )
     },
-    [todos],
+    [],
   )
 
   return (
